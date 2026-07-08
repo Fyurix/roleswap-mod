@@ -104,11 +104,30 @@ public class RoleManager {
             }
         }
 
+        // Раз в секунду (каждые 20 тиков) обновляем надпись над хотбаром у каждого игрока с его ролью
+        if (server.getTicks() % 20 == 0) {
+            for (Map.Entry<UUID, Role> entry : assignments.entrySet()) {
+                ServerPlayerEntity p = server.getPlayerManager().getPlayer(entry.getKey());
+                if (p != null) {
+                    p.sendMessage(actionBarTextFor(entry.getValue()), true);
+                }
+            }
+        }
+
         ticksLeft--;
         if (ticksLeft <= 0) {
             rotate(server);
             ticksLeft = intervalTicks;
         }
+    }
+
+    private Text actionBarTextFor(Role role) {
+        String label = switch (role) {
+            case BLIND -> "§c§lKÖRSÜN";
+            case MUTE -> "§e§lDİLSİZSİN (seni duyamazlar)";
+            case DEAF -> "§b§lSAĞIRSIN (sen duyamazsın)";
+        };
+        return Text.literal(label);
     }
 
     private void rotate(MinecraftServer server) {
@@ -141,7 +160,7 @@ public class RoleManager {
     }
 
     private void broadcastState(MinecraftServer server) {
-        StringBuilder sb = new StringBuilder("§6[RoleSwap] Новые роли: ");
+        StringBuilder sb = new StringBuilder("§6[RoleSwap] Yeni roller: ");
         for (Map.Entry<UUID, Role> entry : assignments.entrySet()) {
             sb.append(names.getOrDefault(entry.getKey(), "???"))
               .append(" -> ").append(entry.getValue()).append("  ");
@@ -149,4 +168,3 @@ public class RoleManager {
         Text msg = Text.literal(sb.toString());
         server.getPlayerManager().broadcast(msg, false);
     }
-}
