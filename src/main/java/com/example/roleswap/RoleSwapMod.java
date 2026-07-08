@@ -26,13 +26,13 @@ public class RoleSwapMod implements ModInitializer {
                             ServerPlayerEntity p2 = EntityArgumentType.getPlayer(ctx, "p2");
                             ServerPlayerEntity p3 = EntityArgumentType.getPlayer(ctx, "p3");
                             RoleManager.INSTANCE.start(ctx.getSource().getServer(), p1, p2, p3);
-                            ctx.getSource().sendFeedback(() -> Text.literal("§aRoleSwap запущен!"), true);
+                            ctx.getSource().sendFeedback(() -> Text.literal("§aRoleSwap başladı!"), true);
                             return 1;
                         })))))
                 .then(CommandManager.literal("stop")
                     .executes(ctx -> {
                         RoleManager.INSTANCE.stop(ctx.getSource().getServer());
-                        ctx.getSource().sendFeedback(() -> Text.literal("§cRoleSwap остановлен."), true);
+                        ctx.getSource().sendFeedback(() -> Text.literal("§cRoleSwap durduruldu."), true);
                         return 1;
                     }))
                 .then(CommandManager.literal("interval")
@@ -41,7 +41,7 @@ public class RoleSwapMod implements ModInitializer {
                             int minutes = IntegerArgumentType.getInteger(ctx, "minutes");
                             RoleManager.INSTANCE.setIntervalMinutes(minutes);
                             ctx.getSource().sendFeedback(() ->
-                                Text.literal("§eИнтервал ротации: " + minutes + " мин."), true);
+                                Text.literal("§eRotasyon aralığı: " + minutes + " dk."), true);
                             return 1;
                         })))
             );
